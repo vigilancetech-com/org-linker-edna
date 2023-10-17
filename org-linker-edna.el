@@ -141,7 +141,7 @@ S is a string formatted as org edna ids property value."
   (mapcan 'org-linker-edna-action-dispatcher (helm-marked-candidates)))
 
 
-(defun org-linker-edna-callback (source target)
+(defun org-linker-edna-callback (target source)
   (let ((source-id (org-linker-edna-get-or-create-id-for-marker source))
 	(target-id (org-linker-edna-get-or-create-id-for-marker target)))
     (org-linker-edna-set-blocker source target)
