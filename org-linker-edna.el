@@ -37,6 +37,9 @@
 (setq org-linker-to-heading t)
 (setq link-id-function 'org-id-get-create)
 
+(defcustom org-linker-edna-reverse-source-target nil
+  "reverse source and target locations, i.e. point is at the
+task that will be dependent on the one queried for")
 
 (defun org-linker-edna-ids (s)
   "Return a list of ids found in S.
@@ -141,8 +144,10 @@ S is a string formatted as org edna ids property value."
   (mapcan 'org-linker-edna-action-dispatcher (helm-marked-candidates)))
 
 
-(defun org-linker-edna-callback (target source)
-  (let ((source-id (org-linker-edna-get-or-create-id-for-marker source))
+(defun org-linker-edna-callback (source target)
+  (let ((source (if org-linker-edna-reverse-source-target target source))
+        (target (if org-linker-edna-reverse-source-target source target))
+        (source-id (org-linker-edna-get-or-create-id-for-marker source))
 	(target-id (org-linker-edna-get-or-create-id-for-marker target)))
     (org-linker-edna-set-blocker source target)
     (org-linker-edna-set-trigger-helm target source)
